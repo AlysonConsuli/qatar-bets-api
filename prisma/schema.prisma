@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  password  String
+  createdAt DateTime @default(now()) @db.Timestamptz()
+  Bets      Bets[]
+
+  @@map("users")
+}
+
+model Teams {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now()) @db.Timestamptz()
+  GameTeam1 Games[]  @relation("gameTeam1")
+  GameTeam2 Games[]  @relation("gameTeam2")
+
+  @@map("teams")
+}
+
+model Games {
+  id        Int       @id @default(autoincrement())
+  team1Id   Int
+  team2Id   Int
+  createdAt DateTime  @default(now()) @db.Timestamptz()
+  team1     Teams     @relation("gameTeam1", fields: [team1Id], references: [id])
+  team2     Teams     @relation("gameTeam2", fields: [team2Id], references: [id])
+  Bets      Bets[]
+  Results   Results[]
+
+  @@unique([team1Id, team2Id])
+  @@map("games")
+}
+
+model Bets {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  gameId    Int
+  score1    Int
+  score2    Int
+  createdAt DateTime @default(now()) @db.Timestamptz()
+  user      Users    @relation(fields: [userId], references: [id])
+  game      Games    @relation(fields: [gameId], references: [id])
+
+  @@unique([userId, gameId])
+  @@map("bets")
+}
+
+model Results {
+  id        Int      @id @default(autoincrement())
+  gameId    Int      @unique
+  score1    Int
+  score2    Int
+  createdAt DateTime @default(now()) @db.Timestamptz()
+  game      Games    @relation(fields: [gameId], references: [id])
+
+  @@map("results")
+}
