@@ -32,14 +32,15 @@ model Teams {
 }
 
 model Games {
-  id        Int       @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   team1Id   Int
   team2Id   Int
-  createdAt DateTime  @default(now()) @db.Timestamptz()
-  team1     Teams     @relation("gameTeam1", fields: [team1Id], references: [id])
-  team2     Teams     @relation("gameTeam2", fields: [team2Id], references: [id])
+  score1    Int?
+  score2    Int?
+  createdAt DateTime @default(now()) @db.Timestamptz()
+  team1     Teams    @relation("gameTeam1", fields: [team1Id], references: [id])
+  team2     Teams    @relation("gameTeam2", fields: [team2Id], references: [id])
   Bets      Bets[]
-  Results   Results[]
 
   @@unique([team1Id, team2Id])
   @@map("games")
@@ -58,15 +59,4 @@ model Bets {
 
   @@unique([userId, gameId])
   @@map("bets")
-}
-
-model Results {
-  id        Int      @id @default(autoincrement())
-  gameId    Int      @unique
-  score1    Int
-  score2    Int
-  createdAt DateTime @default(now()) @db.Timestamptz()
-  game      Games    @relation(fields: [gameId], references: [id])
-
-  @@map("results")
 }
