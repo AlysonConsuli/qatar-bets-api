@@ -25,4 +25,16 @@ export const signup = async (userData: UserInsertData) => {
   );
 };
 
-export const signin = async (userData: UserInsertData) => {};
+export const signin = async (userData: UserInsertData) => {
+  const { name, password } = userData;
+  const user = await authRepository.findUserByName(name);
+  if (!user) {
+    throw notFoundError("User not found!");
+  }
+  if (!bcrypt.compareSync(password, user?.password)) {
+    throw unauthorizedError("Incorrect password!");
+  }
+  const secretKey = process.env.JWT_SECRET_KEY;
+  const token: string = jwt.sign(user, secretKey);
+  return token;
+};
