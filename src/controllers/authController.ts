@@ -4,8 +4,8 @@ import * as authService from "../services/authService.js";
 import { UserInsertData } from "../interfaces/createData.js";
 
 export const signup = async (req: Request, res: Response) => {
-  // const user: UserInsertData = req.body;
-  // await authService.signup({ name: user.name, password: user.password });
+  const user: UserInsertData = req.body;
+  await authService.signup({ name: user.name, password: user.password });
   res.sendStatus(201);
 };
 

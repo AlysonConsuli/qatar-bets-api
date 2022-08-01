@@ -1,6 +1,6 @@
 import { Users, Teams, Games, Bets, Results } from "@prisma/client";
 
-export type UserInsertData = Omit<Users, "id" | "createdAt">;
+export type UserInsertData = Omit<Users, "id" | "createdAt" | "isPaid">;
 export type BetInsertData = Omit<Bets, "id" | "createdAt">;
 export type ResultInsertData = Omit<Results, "id" | "createdAt">;
 interface PasswordConfirmation {
