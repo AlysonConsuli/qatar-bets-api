@@ -9,3 +9,4 @@ interface PasswordConfirmation {
 export type SignupInsertData = UserInsertData & PasswordConfirmation;
 export type AppInsertData = UserInsertData | BetInsertData | GameInsertData;
 export type Table = "users" | "bets" | "teams" | "games";
+export type GroupBy = "user" | "game";

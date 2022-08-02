@@ -44,3 +44,39 @@ export const getBets = async () => {
     },
   });
 };
+
+export const getUsersBets = async (userId: number) => {
+  return await prisma.bets.findMany({
+    select: {
+      id: true,
+      user: {
+        select: {
+          name: true,
+          isPaid: true,
+        },
+      },
+      game: {
+        select: {
+          team1: {
+            select: {
+              name: true,
+            },
+          },
+          score1: true,
+          team2: {
+            select: {
+              name: true,
+            },
+          },
+          score2: true,
+        },
+      },
+      score1: true,
+      score2: true,
+      points: true,
+    },
+    where: {
+      userId,
+    },
+  });
+};

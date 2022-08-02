@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { BetInsertData } from "../interfaces/createData.js";
+import { BetInsertData, GroupBy } from "../interfaces/createData.js";
 import * as betsService from "../services/betsService.js";
 
 export const addBet = async (req: Request, res: Response) => {
@@ -11,6 +11,8 @@ export const addBet = async (req: Request, res: Response) => {
 };
 
 export const getBets = async (req: Request, res: Response) => {
-  const bets = await betsService.getBets();
-  res.send(bets);
+  const groupBy = req.query.groupBy as GroupBy;
+  const userId: number = res.locals.user.id;
+  const bets = await betsService.getBets(groupBy, userId);
+  res.send({ bets });
 };

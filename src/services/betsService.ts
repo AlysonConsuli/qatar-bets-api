@@ -1,4 +1,4 @@
-import { BetInsertData } from "../interfaces/createData.js";
+import { BetInsertData, GroupBy } from "../interfaces/createData.js";
 import { validateHasData } from "../utils/validateData.js";
 import * as appRepository from "../repositories/appRepository.js";
 import * as betsRepository from "../repositories/betsRepository.js";
@@ -14,6 +14,9 @@ export const addBet = async (bet: BetInsertData) => {
   await appRepository.insertData(bet, "bets");
 };
 
-export const getBets = async () => {
+export const getBets = async (groupBy: GroupBy, userId: number) => {
+  if (groupBy === "user") {
+    return await betsRepository.getUsersBets(userId);
+  }
   return await betsRepository.getBets();
 };
