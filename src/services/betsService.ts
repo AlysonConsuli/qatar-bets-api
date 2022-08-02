@@ -13,3 +13,7 @@ export const addBet = async (bet: BetInsertData) => {
   }
   await appRepository.insertData(bet, "bets");
 };
+
+export const getBets = async () => {
+  return await betsRepository.getBets();
+};

@@ -9,3 +9,8 @@ export const addBet = async (req: Request, res: Response) => {
   await betsService.addBet({ userId, ...betData });
   res.sendStatus(201);
 };
+
+export const getBets = async (req: Request, res: Response) => {
+  const bets = await betsService.getBets();
+  res.send(bets);
+};
