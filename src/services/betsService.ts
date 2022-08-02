@@ -2,7 +2,10 @@ import { BetInsertData, GroupBy } from "../interfaces/createData.js";
 import { validateHasData } from "../utils/validateData.js";
 import * as appRepository from "../repositories/appRepository.js";
 import * as betsRepository from "../repositories/betsRepository.js";
-import { conflictError } from "../middlewares/errorHandlingMiddleware.js";
+import {
+  conflictError,
+  unprocessableEntityError,
+} from "../middlewares/errorHandlingMiddleware.js";
 
 export const addBet = async (bet: BetInsertData) => {
   const { userId, gameId } = bet;
@@ -19,4 +22,12 @@ export const getBets = async (groupBy: GroupBy, userId: number) => {
     return await betsRepository.getUsersBets(userId);
   }
   return await betsRepository.getBets();
+};
+
+export const getBetsByGame = async (gameId: number) => {
+  if (!gameId || gameId <= 0) {
+    throw unprocessableEntityError("gameId must be an integer bigger than 0");
+  }
+  await validateHasData(gameId, "games", "Game");
+  return await betsRepository.getBetsByGame(gameId);
 };
