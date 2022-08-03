@@ -23,7 +23,7 @@ export const postResult = async (
 
 const updatePoints = async (result: ResultInsertData) => {
   const { id: gameId, score1, score2 } = result;
-  const bets = await betsRepository.getBets();
+  const bets = await betsRepository.getBetsByGame(gameId);
   for (let i = 0; i < bets.length; i++) {
     const bet = bets[i];
     const userId = bet.user.id;
