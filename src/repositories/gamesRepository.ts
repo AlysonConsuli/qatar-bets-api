@@ -5,14 +5,16 @@ export const getGames = async () => {
     select: {
       id: true,
       team1: {
-        select: { name: true },
+        select: {
+          name: true,
+        },
       },
-      score1: true,
       team2: {
         select: {
           name: true,
         },
       },
+      score1: true,
       score2: true,
     },
   });

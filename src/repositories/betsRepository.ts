@@ -18,6 +18,7 @@ export const getBets = async () => {
       id: true,
       user: {
         select: {
+          id: true,
           name: true,
           isPaid: true,
         },
@@ -29,12 +30,12 @@ export const getBets = async () => {
               name: true,
             },
           },
-          score1: true,
           team2: {
             select: {
               name: true,
             },
           },
+          score1: true,
           score2: true,
         },
       },
@@ -51,6 +52,7 @@ export const getUsersBets = async (userId: number) => {
       id: true,
       user: {
         select: {
+          id: true,
           name: true,
           isPaid: true,
         },
@@ -62,12 +64,12 @@ export const getUsersBets = async (userId: number) => {
               name: true,
             },
           },
-          score1: true,
           team2: {
             select: {
               name: true,
             },
           },
+          score1: true,
           score2: true,
         },
       },
@@ -87,6 +89,7 @@ export const getBetsByGame = async (gameId: number) => {
       id: true,
       user: {
         select: {
+          id: true,
           name: true,
           isPaid: true,
         },
@@ -98,12 +101,12 @@ export const getBetsByGame = async (gameId: number) => {
               name: true,
             },
           },
-          score1: true,
           team2: {
             select: {
               name: true,
             },
           },
+          score1: true,
           score2: true,
         },
       },
@@ -113,6 +116,22 @@ export const getBetsByGame = async (gameId: number) => {
     },
     where: {
       gameId,
+    },
+  });
+};
+
+export const postPoints = async (
+  gameId: number,
+  userId: number,
+  points: number,
+) => {
+  await prisma.bets.updateMany({
+    where: {
+      gameId,
+      userId,
+    },
+    data: {
+      points,
     },
   });
 };
