@@ -9,3 +9,8 @@ export const postPayment = async (req: Request, res: Response) => {
   await usersService.postPayment(user, admin);
   res.sendStatus(200);
 };
+
+export const getRanking = async (req: Request, res: Response) => {
+  const ranking = await usersService.getRanking();
+  res.send(ranking);
+};

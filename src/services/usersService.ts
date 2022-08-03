@@ -11,3 +11,13 @@ export const postPayment = async (user: PaymentInsertData, admin: string) => {
   await validateHasData(userId, "users", "User");
   await usersRepository.postPayment(userId, isPaid);
 };
+
+export const getRanking = async () => {
+  const users = await usersRepository.getUsers();
+  const points = await usersRepository.getRanking();
+  const ranking = points.map((userPoints) => {
+    const user = users.find((user) => user.id === userPoints.userId);
+    return { ...user, points: userPoints._sum.points };
+  });
+  return ranking;
+};
