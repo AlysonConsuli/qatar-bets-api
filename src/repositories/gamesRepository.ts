@@ -17,3 +17,27 @@ export const getGames = async () => {
     },
   });
 };
+
+export const findResultById = async (gameId: number) => {
+  return await prisma.games.findFirst({
+    where: {
+      id: gameId,
+    },
+  });
+};
+
+export const postResult = async (
+  gameId: number,
+  score1: number,
+  score2: number,
+) => {
+  await prisma.games.update({
+    where: {
+      id: gameId,
+    },
+    data: {
+      score1,
+      score2,
+    },
+  });
+};
