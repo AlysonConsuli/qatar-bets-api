@@ -10,3 +10,4 @@ export type SignupInsertData = UserInsertData & PasswordConfirmation;
 export type AppInsertData = UserInsertData | BetInsertData | ResultInsertData;
 export type Table = "users" | "bets" | "teams" | "games";
 export type GroupBy = "user" | "game";
+export type PaymentInsertData = Omit<Users, "name" | "password" | "createdAt">;
