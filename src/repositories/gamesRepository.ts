@@ -17,6 +17,7 @@ export const getGames = async () => {
       score1: true,
       score2: true,
     },
+    orderBy: { id: "asc" },
   });
 };
 

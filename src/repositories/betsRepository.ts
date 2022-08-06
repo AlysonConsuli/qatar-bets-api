@@ -1,4 +1,20 @@
 import prisma from "../config/db.js";
+import { BetInsertData } from "../interfaces/createData.js";
+
+export const upsertBet = async (data: BetInsertData, betId: number) => {
+  await prisma.bets.upsert({
+    where: {
+      id: betId,
+    },
+    update: {
+      score1: data.score1,
+      score2: data.score2,
+    },
+    create: {
+      ...data,
+    },
+  });
+};
 
 export const findBetByUserIdAndGameId = async (
   userId: number,
@@ -25,6 +41,7 @@ export const getBets = async () => {
       },
       game: {
         select: {
+          id: true,
           team1: {
             select: {
               name: true,
@@ -43,6 +60,7 @@ export const getBets = async () => {
       score2: true,
       points: true,
     },
+    orderBy: { gameId: "asc" },
   });
 };
 
@@ -59,6 +77,7 @@ export const getUsersBets = async (userId: number) => {
       },
       game: {
         select: {
+          id: true,
           team1: {
             select: {
               name: true,
@@ -80,6 +99,7 @@ export const getUsersBets = async (userId: number) => {
     where: {
       userId,
     },
+    orderBy: { gameId: "asc" },
   });
 };
 
@@ -96,6 +116,7 @@ export const getBetsByGame = async (gameId: number) => {
       },
       game: {
         select: {
+          id: true,
           team1: {
             select: {
               name: true,
@@ -117,6 +138,7 @@ export const getBetsByGame = async (gameId: number) => {
     where: {
       gameId,
     },
+    orderBy: { gameId: "asc" },
   });
 };
 
