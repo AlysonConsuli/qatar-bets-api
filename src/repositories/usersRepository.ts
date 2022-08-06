@@ -15,11 +15,16 @@ export const getRanking = async () => {
   return await prisma.bets.groupBy({
     by: ["userId"],
     _sum: { points: true },
-    orderBy: {
-      _sum: {
-        points: "desc",
+    orderBy: [
+      {
+        _sum: {
+          points: "desc",
+        },
       },
-    },
+      {
+        userId: "asc",
+      },
+    ],
   });
 };
 

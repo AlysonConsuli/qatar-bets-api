@@ -12,5 +12,5 @@ export const postPayment = async (req: Request, res: Response) => {
 
 export const getRanking = async (req: Request, res: Response) => {
   const ranking = await usersService.getRanking();
-  res.send(ranking);
+  res.send({ ranking });
 };
