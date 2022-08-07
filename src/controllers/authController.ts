@@ -18,3 +18,9 @@ export const signin = async (req: Request, res: Response) => {
 export const autologin = async (req: Request, res: Response) => {
   res.sendStatus(200);
 };
+
+export const adminlogin = async (req: Request, res: Response) => {
+  const userName: string = res.locals.user.name;
+  await authService.adminlogin(userName);
+  res.sendStatus(200);
+};

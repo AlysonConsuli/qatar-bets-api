@@ -38,3 +38,9 @@ export const signin = async (userData: UserInsertData) => {
   const token: string = jwt.sign(user, secretKey);
   return token;
 };
+
+export const adminlogin = async (userName: string) => {
+  if (userName !== "admin") {
+    throw unauthorizedError("Only accessed by admin");
+  }
+};
