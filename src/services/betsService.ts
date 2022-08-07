@@ -1,11 +1,17 @@
 import { BetInsertData, GroupBy } from "../interfaces/createData.js";
 import { validateHasData } from "../utils/validateData.js";
 import * as betsRepository from "../repositories/betsRepository.js";
-import { unprocessableEntityError } from "../middlewares/errorHandlingMiddleware.js";
+import {
+  unauthorizedError,
+  unprocessableEntityError,
+} from "../middlewares/errorHandlingMiddleware.js";
 
-export const addBet = async (bet: BetInsertData) => {
+export const addBet = async (bet: BetInsertData, isPaid: boolean) => {
   const { userId, gameId } = bet;
   await validateHasData(gameId, "games", "Game");
+  if (!isPaid) {
+    throw unauthorizedError("You need to pay admin to add bets");
+  }
   const hasBet = await betsRepository.findBetByUserIdAndGameId(userId, gameId);
   const betId = hasBet?.id ? hasBet.id : 0;
   await betsRepository.upsertBet(bet, betId);

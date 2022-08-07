@@ -5,8 +5,9 @@ import * as betsService from "../services/betsService.js";
 
 export const addBet = async (req: Request, res: Response) => {
   const userId: number = res.locals.user.id;
+  const isPaid: boolean = res.locals.user.isPaid;
   const betData: BetInsertData = req.body;
-  await betsService.addBet({ userId, ...betData });
+  await betsService.addBet({ userId, ...betData }, isPaid);
   res.sendStatus(201);
 };
 
