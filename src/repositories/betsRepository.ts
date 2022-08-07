@@ -138,7 +138,7 @@ export const getBetsByGame = async (gameId: number) => {
     where: {
       gameId,
     },
-    orderBy: { gameId: "asc" },
+    orderBy: { user: { name: "asc" } },
   });
 };
 
