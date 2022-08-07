@@ -35,5 +35,13 @@ export const getUsers = async () => {
       name: true,
       isPaid: true,
     },
+    orderBy: [
+      {
+        isPaid: "asc",
+      },
+      {
+        name: "asc",
+      },
+    ],
   });
 };

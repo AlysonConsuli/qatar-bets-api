@@ -14,3 +14,8 @@ export const getRanking = async (req: Request, res: Response) => {
   const ranking = await usersService.getRanking();
   res.send({ ranking });
 };
+
+export const getUsers = async (req: Request, res: Response) => {
+  const users = await usersService.getUsers();
+  res.send({ users });
+};

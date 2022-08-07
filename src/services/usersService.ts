@@ -21,3 +21,8 @@ export const getRanking = async () => {
   });
   return ranking;
 };
+
+export const getUsers = async () => {
+  const users = await usersRepository.getUsers();
+  return users;
+};
