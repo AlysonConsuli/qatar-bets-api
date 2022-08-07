@@ -17,6 +17,12 @@ export const getBets = async (req: Request, res: Response) => {
   res.send({ bets });
 };
 
+export const getBetsByUser = async (req: Request, res: Response) => {
+  const userId: number = +req.params.userId;
+  const bets = await betsService.getBetsByUser(userId);
+  res.send({ bets });
+};
+
 export const getBetsByGame = async (req: Request, res: Response) => {
   const gameId: number = +req.params.gameId;
   const bets = await betsService.getBetsByGame(gameId);

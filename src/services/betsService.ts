@@ -18,6 +18,14 @@ export const getBets = async (groupBy: GroupBy, userId: number) => {
   return await betsRepository.getBets();
 };
 
+export const getBetsByUser = async (userId: number) => {
+  if (!userId || userId <= 0) {
+    throw unprocessableEntityError("userId must be an integer bigger than 0");
+  }
+  await validateHasData(userId, "users", "User");
+  return await betsRepository.getUsersBets(userId);
+};
+
 export const getBetsByGame = async (gameId: number) => {
   if (!gameId || gameId <= 0) {
     throw unprocessableEntityError("gameId must be an integer bigger than 0");
