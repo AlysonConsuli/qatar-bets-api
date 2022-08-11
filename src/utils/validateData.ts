@@ -1,6 +1,6 @@
 import { notFoundError } from "../middlewares/errorHandlingMiddleware.js";
 import { AppInsertData, Table } from "../interfaces/createData.js";
-import * as appRepository from "../repositories/appRepository.js";
+import { appRepository } from "../repositories/appRepository.js";
 
 export const validateHasData = async (
   id: number,

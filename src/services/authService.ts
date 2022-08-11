@@ -7,11 +7,11 @@ import {
   notFoundError,
   unauthorizedError,
 } from "../middlewares/errorHandlingMiddleware.js";
-import * as appRepository from "../repositories/appRepository.js";
-import * as authRepository from "../repositories/authRepository.js";
+import { appRepository } from "../repositories/appRepository.js";
+import { authRepository } from "../repositories/authRepository.js";
 import { UserInsertData } from "../interfaces/createData.js";
 
-export const signup = async (userData: UserInsertData) => {
+const signup = async (userData: UserInsertData) => {
   const SALT = 10;
   const { name, password } = userData;
   const user = await authRepository.findUserByName(name);
@@ -25,7 +25,7 @@ export const signup = async (userData: UserInsertData) => {
   );
 };
 
-export const signin = async (userData: UserInsertData) => {
+const signin = async (userData: UserInsertData) => {
   const { name, password } = userData;
   const user = await authRepository.findUserByName(name);
   if (!user) {
@@ -39,8 +39,14 @@ export const signin = async (userData: UserInsertData) => {
   return token;
 };
 
-export const adminlogin = async (userName: string) => {
+const adminlogin = async (userName: string) => {
   if (userName !== "admin") {
     throw unauthorizedError("Only accessed by admin");
   }
+};
+
+export const authService = {
+  signup,
+  signin,
+  adminlogin,
 };

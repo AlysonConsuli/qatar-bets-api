@@ -1,7 +1,7 @@
 import { BetInsertData, GroupBy } from "../interfaces/createData.js";
 import { validateHasData } from "../utils/validateData.js";
 import * as betsRepository from "../repositories/betsRepository.js";
-import * as appRepository from "../repositories/appRepository.js";
+import { appRepository } from "../repositories/appRepository.js";
 import {
   notFoundError,
   unauthorizedError,

@@ -2,7 +2,7 @@ import prisma from "../config/db.js";
 
 import { AppInsertData, Table } from "../interfaces/createData.js";
 
-export const findDataById = async (id: number, table: Table) => {
+const findDataById = async (id: number, table: Table) => {
   return await prisma[table as any].findFirst({
     where: {
       id,
@@ -10,8 +10,13 @@ export const findDataById = async (id: number, table: Table) => {
   });
 };
 
-export const insertData = async (data: AppInsertData, table: Table) => {
+const insertData = async (data: AppInsertData, table: Table) => {
   await prisma[table as any].create({
     data,
   });
+};
+
+export const appRepository = {
+  findDataById,
+  insertData,
 };
