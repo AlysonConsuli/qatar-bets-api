@@ -1,6 +1,6 @@
 import { ResultInsertData } from "../interfaces/createData.js";
 import { unauthorizedError } from "../middlewares/errorHandlingMiddleware.js";
-import { validateHasData } from "../utils/validateData.js";
+import { validateData } from "../utils/validateData.js";
 import { gamesRepository } from "../repositories/gamesRepository.js";
 import { betsRepository } from "../repositories/betsRepository.js";
 
@@ -13,7 +13,7 @@ const postResult = async (result: ResultInsertData, userName: string) => {
   if (userName !== "admin") {
     throw unauthorizedError("Only accessed by admin");
   }
-  await validateHasData(gameId, "games", "Game");
+  await validateData.validateHasData(gameId, "games", "Game");
   await gamesRepository.postResult(gameId, score1, score2);
   await updatePoints(result);
 };

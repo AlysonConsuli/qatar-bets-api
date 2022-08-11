@@ -1,6 +1,6 @@
 import { unauthorizedError } from "../middlewares/errorHandlingMiddleware.js";
 import { PaymentInsertData } from "../interfaces/createData.js";
-import { validateHasData } from "../utils/validateData.js";
+import { validateData } from "../utils/validateData.js";
 import { usersRepository } from "../repositories/usersRepository.js";
 
 const postPayment = async (user: PaymentInsertData, admin: string) => {
@@ -8,7 +8,7 @@ const postPayment = async (user: PaymentInsertData, admin: string) => {
   if (admin !== "admin") {
     throw unauthorizedError("Only accessed by admin");
   }
-  await validateHasData(userId, "users", "User");
+  await validateData.validateHasData(userId, "users", "User");
   await usersRepository.postPayment(userId, isPaid);
 };
 
