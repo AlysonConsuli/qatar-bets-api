@@ -30,8 +30,11 @@ describe("signup test suite", () => {
 
 describe("signin test suite", () => {
   it("should signin and receive a token", async () => {
-    jest.spyOn(authRepository, "findUserByName").mockResolvedValueOnce(user);
-    jest.spyOn(bcrypt, "compareSync").mockReturnValueOnce(true);
+    const SALT = 10;
+    const hashedPassword = bcrypt.hashSync(password, SALT);
+    jest
+      .spyOn(authRepository, "findUserByName")
+      .mockResolvedValueOnce({ ...user, password: hashedPassword });
     jest.spyOn(jwt, "sign").mockReturnValueOnce("my_token");
     const token = await authService.signin(user);
     expect(token).toEqual("my_token");
@@ -47,12 +50,24 @@ describe("signin test suite", () => {
   });
 
   it("given a incorrect password, return unauthorized error", async () => {
-    jest.spyOn(authRepository, "findUserByName").mockResolvedValueOnce(user);
-    jest.spyOn(bcrypt, "compareSync").mockReturnValueOnce(false);
+    jest
+      .spyOn(authRepository, "findUserByName")
+      .mockResolvedValueOnce({ ...user, password: "wrong password" });
     const promise = authService.signin(user);
     expect(promise).rejects.toEqual({
       type: "unauthorized",
       message: "Incorrect password!",
+    });
+  });
+});
+
+describe("adminlogin test suite", () => {
+  it("should return unauthorized error if user are different from admin", async () => {
+    const userName = user.name;
+    const promise = authService.adminlogin(userName);
+    expect(promise).rejects.toEqual({
+      type: "unauthorized",
+      message: "Only accessed by admin",
     });
   });
 });

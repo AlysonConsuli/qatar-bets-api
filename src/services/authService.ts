@@ -31,7 +31,8 @@ const signin = async (userData: UserInsertData) => {
   if (!user) {
     throw notFoundError("User not found!");
   }
-  if (!bcrypt.compareSync(password, user?.password)) {
+  const validatePassword = bcrypt.compareSync(password, user?.password);
+  if (!validatePassword) {
     throw unauthorizedError("Incorrect password!");
   }
   const secretKey = process.env.JWT_SECRET_KEY;
