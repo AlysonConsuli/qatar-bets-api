@@ -1,6 +1,6 @@
 import prisma from "../config/db.js";
 
-export const getGames = async () => {
+const getGames = async () => {
   return await prisma.games.findMany({
     select: {
       id: true,
@@ -21,7 +21,7 @@ export const getGames = async () => {
   });
 };
 
-export const findResultById = async (gameId: number) => {
+const findResultById = async (gameId: number) => {
   return await prisma.games.findFirst({
     where: {
       id: gameId,
@@ -29,11 +29,7 @@ export const findResultById = async (gameId: number) => {
   });
 };
 
-export const postResult = async (
-  gameId: number,
-  score1: number,
-  score2: number,
-) => {
+const postResult = async (gameId: number, score1: number, score2: number) => {
   await prisma.games.update({
     where: {
       id: gameId,
@@ -43,4 +39,10 @@ export const postResult = async (
       score2,
     },
   });
+};
+
+export const gamesRepository = {
+  getGames,
+  findResultById,
+  postResult,
 };

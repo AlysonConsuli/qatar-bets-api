@@ -1,7 +1,7 @@
 import prisma from "../config/db.js";
 import { BetInsertData } from "../interfaces/createData.js";
 
-export const upsertBet = async (data: BetInsertData, betId: number) => {
+const upsertBet = async (data: BetInsertData, betId: number) => {
   await prisma.bets.upsert({
     where: {
       id: betId,
@@ -16,10 +16,7 @@ export const upsertBet = async (data: BetInsertData, betId: number) => {
   });
 };
 
-export const findBetByUserIdAndGameId = async (
-  userId: number,
-  gameId: number,
-) => {
+const findBetByUserIdAndGameId = async (userId: number, gameId: number) => {
   return await prisma.bets.findFirst({
     where: {
       userId,
@@ -28,7 +25,7 @@ export const findBetByUserIdAndGameId = async (
   });
 };
 
-export const getBets = async () => {
+const getBets = async () => {
   return await prisma.bets.findMany({
     select: {
       id: true,
@@ -64,7 +61,7 @@ export const getBets = async () => {
   });
 };
 
-export const getUsersBets = async (userId: number) => {
+const getUsersBets = async (userId: number) => {
   return await prisma.bets.findMany({
     select: {
       id: true,
@@ -103,7 +100,7 @@ export const getUsersBets = async (userId: number) => {
   });
 };
 
-export const getBetsByGame = async (gameId: number) => {
+const getBetsByGame = async (gameId: number) => {
   return await prisma.bets.findMany({
     select: {
       id: true,
@@ -142,11 +139,7 @@ export const getBetsByGame = async (gameId: number) => {
   });
 };
 
-export const postPoints = async (
-  gameId: number,
-  userId: number,
-  points: number,
-) => {
+const postPoints = async (gameId: number, userId: number, points: number) => {
   await prisma.bets.updateMany({
     where: {
       gameId,
@@ -156,4 +149,13 @@ export const postPoints = async (
       points,
     },
   });
+};
+
+export const betsRepository = {
+  upsertBet,
+  findBetByUserIdAndGameId,
+  getBets,
+  getUsersBets,
+  getBetsByGame,
+  postPoints,
 };

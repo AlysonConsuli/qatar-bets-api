@@ -1,6 +1,6 @@
 import { BetInsertData, GroupBy } from "../interfaces/createData.js";
 import { validateHasData } from "../utils/validateData.js";
-import * as betsRepository from "../repositories/betsRepository.js";
+import { betsRepository } from "../repositories/betsRepository.js";
 import { appRepository } from "../repositories/appRepository.js";
 import {
   notFoundError,
@@ -8,7 +8,7 @@ import {
   unprocessableEntityError,
 } from "../middlewares/errorHandlingMiddleware.js";
 
-export const addBet = async (bet: BetInsertData) => {
+const addBet = async (bet: BetInsertData) => {
   const { userId, gameId } = bet;
   await validateHasData(gameId, "games", "Game");
   const user = await appRepository.findDataById(userId, "users");
@@ -23,14 +23,14 @@ export const addBet = async (bet: BetInsertData) => {
   await betsRepository.upsertBet(bet, betId);
 };
 
-export const getBets = async (groupBy: GroupBy, userId: number) => {
+const getBets = async (groupBy: GroupBy, userId: number) => {
   if (groupBy === "user") {
     return await betsRepository.getUsersBets(userId);
   }
   return await betsRepository.getBets();
 };
 
-export const getBetsByUser = async (userId: number) => {
+const getBetsByUser = async (userId: number) => {
   if (!userId || userId <= 0) {
     throw unprocessableEntityError("userId must be an integer bigger than 0");
   }
@@ -38,10 +38,17 @@ export const getBetsByUser = async (userId: number) => {
   return await betsRepository.getUsersBets(userId);
 };
 
-export const getBetsByGame = async (gameId: number) => {
+const getBetsByGame = async (gameId: number) => {
   if (!gameId || gameId <= 0) {
     throw unprocessableEntityError("gameId must be an integer bigger than 0");
   }
   await validateHasData(gameId, "games", "Game");
   return await betsRepository.getBetsByGame(gameId);
+};
+
+export const betsService = {
+  addBet,
+  getBets,
+  getBetsByUser,
+  getBetsByGame,
 };

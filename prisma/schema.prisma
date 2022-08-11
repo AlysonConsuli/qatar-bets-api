@@ -15,7 +15,7 @@ model Users {
   name      String   @unique
   password  String
   isPaid    Boolean  @default(false)
-  createdAt DateTime @default(now()) @db.Timestamptz()
+  createdAt DateTime? @default(now()) @db.Timestamptz()
   Bets      Bets[]
 
   @@map("users")
@@ -24,7 +24,7 @@ model Users {
 model Teams {
   id        Int      @id @default(autoincrement())
   name      String   @unique
-  createdAt DateTime @default(now()) @db.Timestamptz()
+  createdAt DateTime? @default(now()) @db.Timestamptz()
   GameTeam1 Games[]  @relation("gameTeam1")
   GameTeam2 Games[]  @relation("gameTeam2")
 
@@ -37,7 +37,7 @@ model Games {
   team2Id   Int
   score1    Int?
   score2    Int?
-  createdAt DateTime @default(now()) @db.Timestamptz()
+  createdAt DateTime? @default(now()) @db.Timestamptz()
   team1     Teams    @relation("gameTeam1", fields: [team1Id], references: [id])
   team2     Teams    @relation("gameTeam2", fields: [team2Id], references: [id])
   Bets      Bets[]
@@ -53,7 +53,7 @@ model Bets {
   score1    Int
   score2    Int
   points    Int?
-  createdAt DateTime @default(now()) @db.Timestamptz()
+  createdAt DateTime? @default(now()) @db.Timestamptz()
   user      Users    @relation(fields: [userId], references: [id])
   game      Games    @relation(fields: [gameId], references: [id])
 

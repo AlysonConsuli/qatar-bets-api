@@ -1,6 +1,6 @@
 import prisma from "../config/db.js";
 
-export const postPayment = async (userId: number, isPaid: boolean) => {
+const postPayment = async (userId: number, isPaid: boolean) => {
   await prisma.users.update({
     where: {
       id: userId,
@@ -11,7 +11,7 @@ export const postPayment = async (userId: number, isPaid: boolean) => {
   });
 };
 
-export const getRanking = async () => {
+const getRanking = async () => {
   return await prisma.bets.groupBy({
     by: ["userId"],
     _sum: { points: true },
@@ -28,7 +28,7 @@ export const getRanking = async () => {
   });
 };
 
-export const getUsers = async () => {
+const getUsers = async () => {
   return await prisma.users.findMany({
     select: {
       id: true,
@@ -44,4 +44,10 @@ export const getUsers = async () => {
       },
     ],
   });
+};
+
+export const usersRepository = {
+  postPayment,
+  getRanking,
+  getUsers,
 };
