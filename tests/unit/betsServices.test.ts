@@ -23,4 +23,26 @@ describe("addBet test suite", () => {
     await betsService.addBet(bet);
     expect(betsRepository.upsertBet).toBeCalled();
   });
+
+  it("given a user that doesnt exist, return not found error", async () => {
+    jest.spyOn(validateData, "validateHasData").mockResolvedValueOnce(game);
+    jest.spyOn(appRepository, "findDataById").mockResolvedValueOnce(null);
+    const promise = betsService.addBet(bet);
+    expect(promise).rejects.toEqual({
+      type: "notFound",
+      message: "User not found",
+    });
+  });
+
+  it("given a user that doesnt have paid, return unauthorized error", async () => {
+    jest.spyOn(validateData, "validateHasData").mockResolvedValueOnce(game);
+    jest
+      .spyOn(appRepository, "findDataById")
+      .mockResolvedValueOnce({ ...user, isPaid: false });
+    const promise = betsService.addBet(bet);
+    expect(promise).rejects.toEqual({
+      type: "unauthorized",
+      message: "You need to pay admin to add bets",
+    });
+  });
 });
