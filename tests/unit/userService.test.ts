@@ -1,11 +1,11 @@
 import { jest } from "@jest/globals";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 import { authService } from "../../src/services/authService.js";
 import { authRepository } from "../../src/repositories/authRepository.js";
 import { appRepository } from "../../src/repositories/appRepository.js";
 import { userBody } from "../factories/userFactory.js";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 
 const user = { ...userBody(), id: 1, isPaid: false, createdAt: null };
 const { id, name, password, isPaid } = user;
