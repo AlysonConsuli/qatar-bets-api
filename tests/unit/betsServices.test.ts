@@ -24,6 +24,17 @@ describe("addBet test suite", () => {
     expect(betsRepository.upsertBet).toBeCalled();
   });
 
+  it("should update bet", async () => {
+    jest.spyOn(validateData, "validateHasData").mockResolvedValueOnce(game);
+    jest.spyOn(appRepository, "findDataById").mockResolvedValueOnce(user);
+    jest
+      .spyOn(betsRepository, "findBetByUserIdAndGameId")
+      .mockResolvedValueOnce(bet);
+    jest.spyOn(betsRepository, "upsertBet").mockResolvedValueOnce(null);
+    await betsService.addBet(bet);
+    expect(betsRepository.upsertBet).toBeCalled();
+  });
+
   it("given a user that doesnt exist, return not found error", async () => {
     jest.spyOn(validateData, "validateHasData").mockResolvedValueOnce(game);
     jest.spyOn(appRepository, "findDataById").mockResolvedValueOnce(null);

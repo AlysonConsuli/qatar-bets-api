@@ -15,7 +15,7 @@ const addBet = async (bet: BetInsertData) => {
   if (!user) {
     throw notFoundError("User not found");
   }
-  if (!user?.isPaid) {
+  if (!user.isPaid) {
     throw unauthorizedError("You need to pay admin to add bets");
   }
   const hasBet = await betsRepository.findBetByUserIdAndGameId(userId, gameId);
