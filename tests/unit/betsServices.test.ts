@@ -106,3 +106,21 @@ describe("getBetsByGame test suite", () => {
     });
   });
 });
+
+describe("validateData test suite", () => {
+  it("should return data", async () => {
+    jest.spyOn(appRepository, "findDataById").mockResolvedValueOnce(bet);
+    const data = await validateData.validateHasData(bet.id, "bets", "Bet");
+    expect(data).toEqual(bet);
+  });
+
+  it("given a gameId less or equal to 0, return unprocessable entity error", async () => {
+    const tableTitle = "Bet";
+    jest.spyOn(appRepository, "findDataById").mockResolvedValueOnce(null);
+    const promise = validateData.validateHasData(-1, "bets", tableTitle);
+    expect(promise).rejects.toEqual({
+      type: "notFound",
+      message: `${tableTitle} not found!`,
+    });
+  });
+});
