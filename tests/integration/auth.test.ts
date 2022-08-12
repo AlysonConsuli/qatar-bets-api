@@ -5,6 +5,7 @@ import app from "../../src/app.js";
 import prisma from "../../src/config/db.js";
 import { deleteAllData } from "../factories/scenarioFactory.js";
 import * as userFactory from "../factories/userFactory.js";
+import * as tokenFactory from "../factories/tokenFactory.js";
 
 beforeEach(async () => {
   await deleteAllData();
@@ -84,6 +85,19 @@ describe("signin test suite", () => {
 
     response = await agent.post("/sign-in").send({ ...user, password: "123" });
     expect(response.status).toBe(422);
+  });
+});
+
+describe("autologin test suite", () => {
+  it("should autologin", async () => {
+    const token = await tokenFactory.createToken();
+
+    const response = await agent
+      .post("/auto-login")
+      .set("Authorization", `Bearer ${token}`)
+      .send({});
+
+    expect(response.status).toBe(200);
   });
 });
 

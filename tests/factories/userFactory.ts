@@ -21,5 +21,6 @@ export const createUser = async (user: UserInsertData) => {
     },
   });
 
-  return { ...userSave, plainPassword: user.password };
+  //return { ...userSave, plainPassword: user.password };
+  return userSave;
 };
