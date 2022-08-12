@@ -9,3 +9,12 @@ export const createToken = async () => {
   const token: string = jwt.sign(createdUser, secretKey);
   return token;
 };
+
+export const createAdminToken = async () => {
+  const user = userFactory.userBody();
+  const createdAdmin = await userFactory.createUser({ ...user, name: "admin" });
+  const secretKey = process.env.JWT_SECRET_KEY;
+
+  const token: string = jwt.sign(createdAdmin, secretKey);
+  return token;
+};

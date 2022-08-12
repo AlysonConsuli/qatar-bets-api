@@ -101,6 +101,30 @@ describe("autologin test suite", () => {
   });
 });
 
+describe("adminlogin test suite", () => {
+  it("should login admin", async () => {
+    const token = await tokenFactory.createAdminToken();
+
+    const response = await agent
+      .post("/admin-login")
+      .set("Authorization", `Bearer ${token}`)
+      .send({});
+
+    expect(response.status).toBe(200);
+  });
+
+  it("given an user different from admin, receive 401", async () => {
+    const token = await tokenFactory.createToken();
+
+    const response = await agent
+      .post("/admin-login")
+      .set("Authorization", `Bearer ${token}`)
+      .send({});
+
+    expect(response.status).toBe(401);
+  });
+});
+
 afterAll(async () => {
   await prisma.$disconnect();
 });
