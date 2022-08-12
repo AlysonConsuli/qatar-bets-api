@@ -1,13 +1,13 @@
 import { jest } from "@jest/globals";
+import { faker } from "@faker-js/faker";
 
 import { usersService } from "../../src/services/usersService.js";
 import { usersRepository } from "../../src/repositories/usersRepository.js";
 import { validateData } from "../../src/utils/validateData.js";
 import { userBody } from "../factories/userFactory.js";
-import { betBody } from "../factories/betFactory.js";
 
 const user = { ...userBody(), id: 1, isPaid: false, createdAt: null };
-const bet = { ...betBody(), id: 1, points: null, createdAt: null };
+const { id, name, isPaid } = user;
 
 describe("postPayment test suite", () => {
   it("should post user payment", async () => {
@@ -23,5 +23,36 @@ describe("postPayment test suite", () => {
       type: "unauthorized",
       message: "Only accessed by admin",
     });
+  });
+});
+
+describe("getRanking test suite", () => {
+  it("should get ranking", async () => {
+    const points = +faker.random.numeric(2);
+    jest
+      .spyOn(usersRepository, "getUsers")
+      .mockResolvedValueOnce([{ id, name, isPaid }]);
+    jest
+      .spyOn(usersRepository, "getRanking")
+      .mockResolvedValueOnce([{ userId: 1, _sum: { points } }]);
+    const ranking = [
+      {
+        id,
+        name,
+        isPaid,
+        points,
+      },
+    ];
+    const getRanking = await usersService.getRanking();
+    expect(getRanking).toEqual(ranking);
+  });
+});
+
+describe("getUsers test suite", () => {
+  it("should get all users", async () => {
+    const users = [{ id, name, isPaid }];
+    jest.spyOn(usersRepository, "getUsers").mockResolvedValueOnce(users);
+    const getUsers = await usersService.getUsers();
+    expect(getUsers).toEqual(users);
   });
 });
