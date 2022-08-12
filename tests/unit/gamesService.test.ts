@@ -11,7 +11,7 @@ import { gameBody } from "../factories/gameFactory.js";
 const bet = { ...betBody(), id: 1, points: null, createdAt: null };
 const user = { ...userBody(), id: 1, isPaid: true, createdAt: null };
 const game = { ...gameBody(), id: 1, createdAt: null };
-const result = { ...gameBody(), id: 1, score1: 1, score2: 0, createdAt: null };
+const result = { ...game, score1: 1, score2: 0 };
 
 describe("getGames test suite", () => {
   it("should get all games", async () => {
