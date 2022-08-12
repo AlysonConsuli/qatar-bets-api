@@ -31,7 +31,7 @@ const signin = async (userData: UserInsertData) => {
   if (!user) {
     throw notFoundError("User not found!");
   }
-  const validatePassword = bcrypt.compareSync(password, user?.password);
+  const validatePassword = bcrypt.compareSync(password, user.password);
   if (!validatePassword) {
     throw unauthorizedError("Incorrect password!");
   }
