@@ -7,7 +7,7 @@ import { UserInsertData } from "../../src/interfaces/createData.js";
 export const userBody = () => {
   const user = {
     name: faker.name.findName(),
-    password: faker.random.alphaNumeric(5),
+    password: faker.internet.password(),
   };
   return user;
 };
