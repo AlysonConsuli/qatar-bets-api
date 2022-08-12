@@ -66,3 +66,23 @@ describe("getBets test suite", () => {
     expect(bets).toEqual([bet]);
   });
 });
+
+describe("getBetsByUser test suite", () => {
+  it("should get all bets from an especific user", async () => {
+    jest.spyOn(validateData, "validateHasData").mockResolvedValueOnce(user);
+    jest
+      .spyOn(betsRepository, "getUsersBets")
+      .mockResolvedValueOnce([bet] as any);
+    const bets = await betsService.getBetsByUser(user.id);
+    expect(betsRepository.getUsersBets).toBeCalled();
+    expect(bets).toEqual([bet]);
+  });
+
+  it("given a userId less or equal to 0, return unprocessable entity error", async () => {
+    const promise = betsService.getBetsByUser(-1);
+    expect(promise).rejects.toEqual({
+      type: "unprocessableEntity",
+      message: "userId must be an integer bigger than 0",
+    });
+  });
+});
