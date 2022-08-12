@@ -86,3 +86,23 @@ describe("getBetsByUser test suite", () => {
     });
   });
 });
+
+describe("getBetsByGame test suite", () => {
+  it("should get all bets from an especific game", async () => {
+    jest.spyOn(validateData, "validateHasData").mockResolvedValueOnce(game);
+    jest
+      .spyOn(betsRepository, "getBetsByGame")
+      .mockResolvedValueOnce([bet] as any);
+    const bets = await betsService.getBetsByGame(game.id);
+    expect(betsRepository.getBetsByGame).toBeCalled();
+    expect(bets).toEqual([bet]);
+  });
+
+  it("given a gameId less or equal to 0, return unprocessable entity error", async () => {
+    const promise = betsService.getBetsByGame(-1);
+    expect(promise).rejects.toEqual({
+      type: "unprocessableEntity",
+      message: "gameId must be an integer bigger than 0",
+    });
+  });
+});
