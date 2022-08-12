@@ -46,3 +46,23 @@ describe("addBet test suite", () => {
     });
   });
 });
+
+describe("getBets test suite", () => {
+  it("should get all bets", async () => {
+    const groupBy = "" as any;
+    jest.spyOn(betsRepository, "getBets").mockResolvedValueOnce([bet] as any);
+    const bets = await betsService.getBets(groupBy, user.id);
+    expect(betsRepository.getBets).toBeCalled();
+    expect(bets).toEqual([bet]);
+  });
+
+  it("should get all bets from the user", async () => {
+    const groupBy = "user";
+    jest
+      .spyOn(betsRepository, "getUsersBets")
+      .mockResolvedValueOnce([bet] as any);
+    const bets = await betsService.getBets(groupBy, user.id);
+    expect(betsRepository.getUsersBets).toBeCalled();
+    expect(bets).toEqual([bet]);
+  });
+});
