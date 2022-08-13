@@ -104,6 +104,38 @@ describe("addBet test suite", () => {
   });
 });
 
+describe("getBets test suite", () => {
+  it("should get all bets", async () => {
+    const scenario = await scenarioFactory.createScenarioTwoTeamsAndOneGame();
+    const token = await tokenFactory.createToken();
+    await betFactory.createBet();
+
+    const response = await agent
+      .get("/bets")
+      .set("Authorization", `Bearer ${token}`);
+    const { bets } = response.body;
+    expect(bets.length).toBe(1);
+    expect(bets[0].game.id).toBe(scenario.game.id);
+  });
+
+  it("should get all user bets", async () => {
+    await scenarioFactory.createScenarioTwoTeamsAndOneGame();
+    const token = await tokenFactory.createToken();
+    await betFactory.createBet();
+
+    await tokenFactory.createToken();
+    const bet = { ...betFactory.betBody(), userId: 2 };
+    await betFactory.createBet(bet);
+
+    const response = await agent
+      .get("/bets?groupBy=user")
+      .set("Authorization", `Bearer ${token}`);
+    const { bets } = response.body;
+    expect(bets.length).toBe(1);
+    expect(bets[0].user.id).toBe(1);
+  });
+});
+
 afterAll(async () => {
   await prisma.$disconnect();
 });

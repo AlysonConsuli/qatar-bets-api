@@ -22,6 +22,6 @@ export const createScenarioTwoTeamsAndOneGame = async (
   const createdGame = await gameFactory.createGame(game);
 
   return {
-    createdGame,
+    game: createdGame,
   };
 };
