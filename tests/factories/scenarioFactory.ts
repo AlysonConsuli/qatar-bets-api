@@ -12,12 +12,13 @@ export const deleteAllData = async () => {
   ]);
 };
 
-export const createScenarioTwoTeamsAndOneGame = async () => {
-  const team1 = teamFactory.teamBody();
-  const team2 = teamFactory.teamBody();
+export const createScenarioTwoTeamsAndOneGame = async (
+  team1 = teamFactory.teamBody(),
+  team2 = teamFactory.teamBody(),
+  game = gameFactory.gameBody(),
+) => {
   await teamFactory.createTeam(team1);
   await teamFactory.createTeam(team2);
-  const game = gameFactory.gameBody();
   const createdGame = await gameFactory.createGame(game);
 
   return {

@@ -12,7 +12,9 @@ export const betBody = () => {
   return bet;
 };
 
-export const createBet = async (bet: BetInsertData) => {
+export const createBet = async (
+  bet: BetInsertData = { ...betBody(), userId: 1 },
+) => {
   const betSave = await prisma.bets.create({
     data: bet,
   });

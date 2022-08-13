@@ -27,3 +27,16 @@ export const createAdminToken = async () => {
   const token: string = jwt.sign(createdAdmin, secretKey);
   return token;
 };
+
+export const createJustToken = async () => {
+  const user = {
+    ...userFactory.userBody(),
+    id: 1,
+    isPaid: false,
+    createdAt: null,
+  };
+  const secretKey = process.env.JWT_SECRET_KEY;
+
+  const token: string = jwt.sign(user, secretKey);
+  return token;
+};
