@@ -1,4 +1,3 @@
-import { faker } from "@faker-js/faker";
 import supertest from "supertest";
 
 import app from "../../src/app.js";

@@ -24,3 +24,16 @@ export const createUser = async (user: UserInsertData) => {
   //return { ...userSave, plainPassword: user.password };
   return userSave;
 };
+
+export const createUserPaid = async (user: UserInsertData) => {
+  const SALT = 10;
+  const userSave = await prisma.users.create({
+    data: {
+      name: user.name,
+      password: bcrypt.hashSync(user.password, SALT),
+      isPaid: true,
+    },
+  });
+
+  return userSave;
+};

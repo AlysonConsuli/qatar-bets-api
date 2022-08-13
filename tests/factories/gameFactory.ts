@@ -14,7 +14,7 @@ export const gameBody = () => {
   return game;
 };
 
-export const creategame = async (game: GameInsertData) => {
+export const createGame = async (game: GameInsertData) => {
   const gameSave = await prisma.games.create({
     data: game,
   });
