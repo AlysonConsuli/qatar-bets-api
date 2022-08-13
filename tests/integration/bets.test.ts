@@ -27,7 +27,7 @@ describe("addBet test suite", () => {
     expect(betCreated).not.toBeNull();
   });
 
-  it("given an game that doenst exist, receive 404", async () => {
+  it("given a game that doenst exist, receive 404", async () => {
     await scenarioFactory.createScenarioTwoTeamsAndOneGame();
     const token = await tokenFactory.createToken();
     const bet = betFactory.betBody();
@@ -133,6 +133,43 @@ describe("getBets test suite", () => {
     const { bets } = response.body;
     expect(bets.length).toBe(1);
     expect(bets[0].user.id).toBe(1);
+  });
+});
+
+describe("getBetsByUser test suite", () => {
+  it("should get bets from a specific user", async () => {
+    const scenario = await scenarioFactory.createScenarioTwoTeamsAndOneGame();
+    const token = await tokenFactory.createToken();
+    await betFactory.createBet();
+
+    const response = await agent
+      .get("/bets/user/1")
+      .set("Authorization", `Bearer ${token}`);
+    const { bets } = response.body;
+    expect(bets.length).toBe(1);
+    expect(bets[0].game.id).toBe(scenario.game.id);
+  });
+
+  it("given invalid params, receive 422", async () => {
+    await scenarioFactory.createScenarioTwoTeamsAndOneGame();
+    const token = await tokenFactory.createToken();
+    await betFactory.createBet();
+
+    const response = await agent
+      .get("/bets/user/0")
+      .set("Authorization", `Bearer ${token}`);
+    expect(response.status).toBe(422);
+  });
+
+  it("given a user that doenst exist, receive 404", async () => {
+    await scenarioFactory.createScenarioTwoTeamsAndOneGame();
+    const token = await tokenFactory.createToken();
+    await betFactory.createBet();
+
+    const response = await agent
+      .get("/bets/user/100")
+      .set("Authorization", `Bearer ${token}`);
+    expect(response.status).toBe(404);
   });
 });
 
