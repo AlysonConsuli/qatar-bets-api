@@ -8,8 +8,14 @@ import { betBody } from "../factories/betFactory.js";
 import { userBody } from "../factories/userFactory.js";
 import { gameBody } from "../factories/gameFactory.js";
 
-const bet = { ...betBody(), id: 1, points: null, createdAt: null };
 const user = { ...userBody(), id: 1, isPaid: true, createdAt: null };
+const bet = {
+  ...betBody(),
+  id: 1,
+  userId: user.id,
+  points: null,
+  createdAt: null,
+};
 const game = { ...gameBody(), id: 1, createdAt: null };
 
 describe("addBet test suite", () => {
