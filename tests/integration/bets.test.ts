@@ -173,6 +173,43 @@ describe("getBetsByUser test suite", () => {
   });
 });
 
+describe("getBetsByGame test suite", () => {
+  it("should get bets from a game", async () => {
+    const scenario = await scenarioFactory.createScenarioTwoTeamsAndOneGame();
+    const token = await tokenFactory.createToken();
+    await betFactory.createBet();
+
+    const response = await agent
+      .get("/bets/game/1")
+      .set("Authorization", `Bearer ${token}`);
+    const { bets } = response.body;
+    expect(bets.length).toBe(1);
+    expect(bets[0].game.id).toBe(scenario.game.id);
+  });
+
+  it("given invalid params, receive 422", async () => {
+    await scenarioFactory.createScenarioTwoTeamsAndOneGame();
+    const token = await tokenFactory.createToken();
+    await betFactory.createBet();
+
+    const response = await agent
+      .get("/bets/game/0")
+      .set("Authorization", `Bearer ${token}`);
+    expect(response.status).toBe(422);
+  });
+
+  it("given a game that doenst exist, receive 404", async () => {
+    await scenarioFactory.createScenarioTwoTeamsAndOneGame();
+    const token = await tokenFactory.createToken();
+    await betFactory.createBet();
+
+    const response = await agent
+      .get("/bets/game/100")
+      .set("Authorization", `Bearer ${token}`);
+    expect(response.status).toBe(404);
+  });
+});
+
 afterAll(async () => {
   await prisma.$disconnect();
 });
