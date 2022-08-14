@@ -1,0 +1,24 @@
+services:
+  db_worldcup:
+    image: postgres
+    container_name: db_worldcup
+    restart: always
+    ports:
+      - 1234:5432
+    env_file:
+      - .env.docker
+    volumes:
+      - pg_worldcup:/var/lib/postgresql/data
+
+  node_app_worldcup:
+    container_name: node_worldcup
+    build: .
+    ports:
+      - 5000:5000
+    depends_on:
+      - db_worldcup
+    env_file:
+      - .env.docker
+
+volumes:
+  pg_worldcup:
