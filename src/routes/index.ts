@@ -12,6 +12,7 @@ router.use(authRouter);
 router.use(betRouter);
 router.use(gameRouter);
 router.use(userRouter);
+//route to e2e:
 if (process.env.NODE_ENV === "test") {
   router.use(e2eRouter);
 }
