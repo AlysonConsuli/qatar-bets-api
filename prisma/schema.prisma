@@ -60,3 +60,10 @@ model Bets {
   @@unique([userId, gameId])
   @@map("bets")
 }
+
+model Student {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  @@map("students")
+}

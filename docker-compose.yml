@@ -11,7 +11,7 @@ services:
       - pg_worldcup:/var/lib/postgresql/data
 
   node_app_worldcup:
-    container_name: node_worldcup
+    container_name: node_app_worldcup
     build: .
     ports:
       - 5000:5000
