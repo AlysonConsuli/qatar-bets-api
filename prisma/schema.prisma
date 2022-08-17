@@ -11,10 +11,10 @@ datasource db {
 }
 
 model Users {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
   password  String
-  isPaid    Boolean  @default(false)
+  isPaid    Boolean   @default(false)
   createdAt DateTime? @default(now()) @db.Timestamptz()
   Bets      Bets[]
 
@@ -22,24 +22,24 @@ model Users {
 }
 
 model Teams {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
   createdAt DateTime? @default(now()) @db.Timestamptz()
-  GameTeam1 Games[]  @relation("gameTeam1")
-  GameTeam2 Games[]  @relation("gameTeam2")
+  GameTeam1 Games[]   @relation("gameTeam1")
+  GameTeam2 Games[]   @relation("gameTeam2")
 
   @@map("teams")
 }
 
 model Games {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   team1Id   Int
   team2Id   Int
   score1    Int?
   score2    Int?
   createdAt DateTime? @default(now()) @db.Timestamptz()
-  team1     Teams    @relation("gameTeam1", fields: [team1Id], references: [id])
-  team2     Teams    @relation("gameTeam2", fields: [team2Id], references: [id])
+  team1     Teams     @relation("gameTeam1", fields: [team1Id], references: [id])
+  team2     Teams     @relation("gameTeam2", fields: [team2Id], references: [id])
   Bets      Bets[]
 
   @@unique([team1Id, team2Id])
@@ -47,23 +47,16 @@ model Games {
 }
 
 model Bets {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   userId    Int
   gameId    Int
   score1    Int
   score2    Int
   points    Int?
   createdAt DateTime? @default(now()) @db.Timestamptz()
-  user      Users    @relation(fields: [userId], references: [id])
-  game      Games    @relation(fields: [gameId], references: [id])
+  user      Users     @relation(fields: [userId], references: [id])
+  game      Games     @relation(fields: [gameId], references: [id])
 
   @@unique([userId, gameId])
   @@map("bets")
-}
-
-model Student {
-  id   Int    @id @default(autoincrement())
-  name String
-
-  @@map("students")
 }

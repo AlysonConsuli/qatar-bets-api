@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "start": "npx prisma generate && tsc && npx prisma migrate deploy && node --optimize_for_size --max_old_space_size=460 dist/src/server.js",
+    "start": "tsc && npx prisma migrate deploy && npx prisma db seed && node --optimize_for_size --max_old_space_size=460 dist/src/server.js",
     "dev": "nodemon src/server.ts",
     "dev:test": "dotenv -e .env.test nodemon src/server.ts",
     "test": "dotenv -e .env.test prisma migrate reset && cross-env && NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest -- -i",
