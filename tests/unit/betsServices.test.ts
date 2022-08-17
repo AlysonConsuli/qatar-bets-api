@@ -62,6 +62,18 @@ describe("addBet test suite", () => {
       message: "You need to pay admin to add bets",
     });
   });
+
+  it("given a bet to a game that has result, return unauthorized error", async () => {
+    jest
+      .spyOn(validateData, "validateHasData")
+      .mockResolvedValueOnce({ ...game, score1: 1, score2: 0 });
+    jest.spyOn(appRepository, "findDataById").mockResolvedValueOnce(user);
+    const promise = betsService.addBet(bet);
+    expect(promise).rejects.toEqual({
+      type: "unauthorized",
+      message: "Betting time ended for this game",
+    });
+  });
 });
 
 describe("getBets test suite", () => {

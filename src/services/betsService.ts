@@ -10,13 +10,16 @@ import {
 
 const addBet = async (bet: BetInsertData) => {
   const { userId, gameId } = bet;
-  await validateData.validateHasData(gameId, "games", "Game");
+  const game: any = await validateData.validateHasData(gameId, "games", "Game");
   const user = await appRepository.findDataById(userId, "users");
   if (!user) {
     throw notFoundError("User not found");
   }
   if (!user.isPaid) {
     throw unauthorizedError("You need to pay admin to add bets");
+  }
+  if (game.score1 !== null || game.score2 !== null) {
+    throw unauthorizedError("Betting time ended for this game");
   }
   const hasBet = await betsRepository.findBetByUserIdAndGameId(userId, gameId);
   const betId = hasBet?.id ? hasBet.id : 0;
