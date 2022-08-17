@@ -31,7 +31,7 @@ describe("getRanking test suite", () => {
     const points = +faker.random.numeric(2);
     jest
       .spyOn(usersRepository, "getUsers")
-      .mockResolvedValueOnce([{ id, name, isPaid }]);
+      .mockResolvedValueOnce([{ id, name, isPaid: true }]);
     jest
       .spyOn(usersRepository, "getRanking")
       .mockResolvedValueOnce([{ userId: 1, _sum: { points } }]);
@@ -39,7 +39,7 @@ describe("getRanking test suite", () => {
       {
         id,
         name,
-        isPaid,
+        isPaid: true,
         points,
       },
     ];

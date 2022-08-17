@@ -19,7 +19,7 @@ const getRanking = async () => {
     const user = users.find((user) => user.id === userPoints.userId);
     return { ...user, points: userPoints._sum.points };
   });
-  return ranking;
+  return ranking.filter((user) => user.isPaid === true);
 };
 
 const getUsers = async () => {
