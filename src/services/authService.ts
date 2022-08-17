@@ -13,16 +13,14 @@ import { UserInsertData } from "../interfaces/createData.js";
 
 const signup = async (userData: UserInsertData) => {
   const SALT = 10;
-  const { name, password } = userData;
+  const { password } = userData;
+  const name = userData.name.trim();
   const user = await authRepository.findUserByName(name);
   if (user) {
     throw conflictError("User already exists!");
   }
   const hashedPassword: string = bcrypt.hashSync(password, SALT);
-  await appRepository.insertData(
-    { ...userData, password: hashedPassword },
-    "users",
-  );
+  await appRepository.insertData({ name, password: hashedPassword }, "users");
 };
 
 const signin = async (userData: UserInsertData) => {
