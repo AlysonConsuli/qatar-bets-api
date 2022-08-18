@@ -14,7 +14,7 @@ describe("signup test suite", () => {
   it("should create user", async () => {
     jest.spyOn(authRepository, "findUserByName").mockResolvedValueOnce(null);
     jest.spyOn(appRepository, "insertData").mockResolvedValueOnce(null);
-    await authService.signup(user);
+    await authService.signup({ ...user, name: `o ${name}` });
     expect(appRepository.insertData).toBeCalled();
   });
 
