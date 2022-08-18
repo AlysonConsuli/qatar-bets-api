@@ -10,11 +10,12 @@ import {
 import { appRepository } from "../repositories/appRepository.js";
 import { authRepository } from "../repositories/authRepository.js";
 import { UserInsertData } from "../interfaces/createData.js";
+import { formats } from "../utils/formatName.js";
 
 const signup = async (userData: UserInsertData) => {
   const SALT = 10;
-  const { password } = userData;
-  const name = userData.name.trim();
+  const { name: username, password } = userData;
+  const name = formats.formatName(username);
   const user = await authRepository.findUserByName(name);
   if (user) {
     throw conflictError("User already exists!");
@@ -24,7 +25,8 @@ const signup = async (userData: UserInsertData) => {
 };
 
 const signin = async (userData: UserInsertData) => {
-  const { name, password } = userData;
+  const { name: username, password } = userData;
+  const name = formats.formatName(username);
   const user = await authRepository.findUserByName(name);
   if (!user) {
     throw notFoundError("User not found!");

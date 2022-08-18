@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 
 import { authService } from "../services/authService.js";
 import { UserInsertData } from "../interfaces/createData.js";
+import { formats } from "../utils/formatName.js";
 
 const signup = async (req: Request, res: Response) => {
   const user: UserInsertData = req.body;
@@ -12,7 +13,8 @@ const signup = async (req: Request, res: Response) => {
 const signin = async (req: Request, res: Response) => {
   const user: UserInsertData = req.body;
   const token = await authService.signin(user);
-  res.send({ name: user.name, token });
+  const name = formats.formatName(user.name);
+  res.send({ name, token });
 };
 
 const autologin = async (req: Request, res: Response) => {
